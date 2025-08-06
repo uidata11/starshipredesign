@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
 
 const mvData = [
   {
@@ -19,7 +22,7 @@ const mvData = [
     id: 3,
     href: "/board/mv/797",
     thumbnail:
-      "https://cdn.pixabay.com/photo/2023/01/27/11/31/anime-7748478_640.jpg",
+      "https://cdn.pixabay.com/photo/2024/03/22/13/58/ai-generated-8649730_640.jpg",
     title: "LUMINA - Cyber Love",
   },
   {
@@ -75,17 +78,17 @@ const releases = [
     date: "2025.04.07",
   },
 ];
-
 export default function Multimedia() {
   return (
     <div className="sm:px-10 px-0">
-      {/* MULTIMEDIA */}
       <div className="flex items-center mt-20 mb-10">
         <p className="text-xl px-4 sm:px-0 sm:text-4xl text-zinc-700 font-semibold">
           MULTIMEDIA
         </p>
         <span className="border border-zinc-700 w-full sm:mx-10" />
       </div>
+
+      {/* MULTIMEDIA */}
       <section
         style={{
           backgroundImage:
@@ -97,12 +100,11 @@ export default function Multimedia() {
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {mvData.map((mv) => (
-            <a
+            <Link
               key={mv.id}
               href={mv.href}
               className="group block relative aspect-square overflow-hidden"
             >
-              {/* next/image 사용 */}
               <Image
                 src={mv.thumbnail}
                 alt={`${mv.title} 썸네일`}
@@ -111,44 +113,43 @@ export default function Multimedia() {
                 sizes="(max-width: 768px) 100vw, 50vw"
                 priority
               />
-              {/* 오버레이 */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 scale-95" />
-              {/* 텍스트 */}
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <p className="text-white text-2xl font-extrabold text-center px-2">
                   {mv.title}
                 </p>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
-      <div className="flex items-center  mt-20 mb-10">
+
+      <div className="flex items-center mt-20 mb-10">
         <p className="text-lg px-4 sm:px-0 sm:text-4xl text-zinc-700 font-semibold">
           NEW RELEASE
         </p>
         <span className="border border-zinc-700 w-full sm:mx-10" />
       </div>
+
       <section className="py-10 max-w-7xl mx-auto px-4">
-        {/* 가로 스크롤 영역 */}
-        <div className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide ">
+        <div className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide">
           {releases.map((item) => (
-            <a
+            <Link
               key={item.id}
               href={item.href}
               className="flex-shrink-0 w-48 sm:w-56 md:w-60 lg:w-64"
             >
-              {/* 정사각형 이미지 컨테이너 */}
               <div className="relative w-full aspect-square overflow-hidden rounded-md">
-                <img
+                <Image
                   src={item.img}
                   alt="앨범 커버"
-                  className="absolute inset-0 w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
               <p className="mt-2 text-sm font-medium truncate">{item.title}</p>
               <span className="text-xs text-gray-500">{item.date}</span>
-            </a>
+            </Link>
           ))}
         </div>
       </section>

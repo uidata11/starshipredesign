@@ -1,5 +1,6 @@
-// components/NoticeSection.tsx
 "use client";
+
+import Link from "next/link";
 
 const dummyNotices = [
   {
@@ -60,9 +61,12 @@ export default function NoticeSection() {
         </ul>
 
         <div className="flex justify-end mt-6">
-          <button className="text-sm text-blue-600 hover:underline">
+          <Link
+            href="/notice"
+            className="text-sm text-blue-600 hover:underline"
+          >
             더보기
-          </button>
+          </Link>
         </div>
       </section>
     </>

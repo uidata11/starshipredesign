@@ -72,9 +72,13 @@ export default function Header() {
           onMouseLeave={() => setHovered(false)}
         >
           {NAV_ITEMS.map((item) => (
-            <a key={item.label} href="#" className="px-2 py-1">
+            <Link
+              key={item.label}
+              href={`/${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+              className="px-2 py-1"
+            >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -100,9 +104,16 @@ export default function Header() {
                     <ul className="space-y-2 text-sm text-gray-800">
                       {item.subItems.map((sub, idx) => (
                         <li key={idx}>
-                          <a href="#" className="hover:underline">
+                          <Link
+                            href={`/${item.label
+                              .toLowerCase()
+                              .replace(/\s+/g, "-")}/${sub
+                              .toLowerCase()
+                              .replace(/\s+/g, "-")}`}
+                            className="hover:underline"
+                          >
                             {sub}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -135,7 +146,15 @@ export default function Header() {
                 <ul className="ml-2 space-y-1 text-sm text-gray-700">
                   {item.subItems.map((sub, idx) => (
                     <li key={idx}>
-                      <a href="#">{sub}</a>
+                      <Link
+                        href={`/${item.label
+                          .toLowerCase()
+                          .replace(/\s+/g, "-")}/${sub
+                          .toLowerCase()
+                          .replace(/\s+/g, "-")}`}
+                      >
+                        {sub}
+                      </Link>
                     </li>
                   ))}
                 </ul>
