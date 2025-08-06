@@ -1,6 +1,7 @@
 "use client";
 import { HiOutlineX, HiOutlineMenu } from "react-icons/hi";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const NAV_ITEMS = [
@@ -52,34 +53,19 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    };
-    if (open) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open]);
-
   return (
     <header className="sticky top-0 z-50 bg-white shadow">
       <div className="flex justify-between items-center max-w-7xl mx-auto px-4 h-20 relative z-50">
-        <a href="/">
+        <Link href="/">
           <Image
             src="/logo.png"
             alt="STARSHIP 로고"
             width={120}
             height={20}
             priority
-            className=""
           />
-        </a>
+        </Link>
 
-        {/* 네비게이션 */}
         <nav
           className="hidden lg:flex gap-8 text-sm font-bold text-gray-900"
           onMouseEnter={() => setHovered(true)}
@@ -91,13 +77,12 @@ export default function Header() {
             </a>
           ))}
         </nav>
-        {/* 메뉴 아이콘 (모바일 전용) */}
+
         <button onClick={() => setOpen(true)} className="lg:hidden p-2">
           <HiOutlineMenu size={24} />
         </button>
       </div>
 
-      {/* 🔥 독립된 상세 메뉴 드롭다운 - nav 바깥, w-screen, 전체에 고정 */}
       {hovered && (
         <div
           className="absolute left-0 top-20 w-screen bg-white z-40"
@@ -129,10 +114,8 @@ export default function Header() {
         </div>
       )}
 
-      {/* 딤처리 */}
       {open && <div className="fixed inset-0 bg-gray-800/40 z-400" />}
 
-      {/* 모바일 사이드바 */}
       <div
         ref={sidebarRef}
         className={`lg:hidden fixed top-0 right-0 h-full w-64 bg-white z-500 p-6 overflow-y-auto shadow-md transform transition-transform duration-300 ease-in-out ${
