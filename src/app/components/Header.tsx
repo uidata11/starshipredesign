@@ -101,7 +101,7 @@ export default function Header() {
         {/* 항상 렌더링하되 visibility만 토글 */}
         <div className="absolute left-0 top-20 w-full z-40">
           <div
-            className={`bg-white shadow max-w-7xl mx-auto px-6 py-6 transition-all duration-300 ease-in-out pointer-events-auto ${
+            className={`bg-white shadow w-full px-6 py-6 transition-all duration-300 ease-in-out pointer-events-auto ${
               hovered
                 ? "opacity-100 translate-y-0 visible"
                 : "opacity-0 -translate-y-3 invisible"
