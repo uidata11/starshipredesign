@@ -65,11 +65,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow">
-      <div
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        className="relative z-50"
-      >
+      <div className="relative z-50">
         <div className="flex justify-between items-center max-w-7xl mx-auto px-4 h-20">
           <Link href="/">
             <Image
@@ -81,7 +77,11 @@ export default function Header() {
             />
           </Link>
 
-          <nav className="hidden lg:flex gap-8 text-sm font-bold text-gray-900">
+          <nav
+            className="hidden lg:flex gap-8 text-sm font-bold text-gray-900"
+            onMouseEnter={() => isLargeScreen && setHovered(true)}
+            onMouseLeave={() => isLargeScreen && setHovered(false)}
+          >
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.label}
@@ -98,47 +98,48 @@ export default function Header() {
           </button>
         </div>
 
-        {/* 항상 렌더링하되 visibility만 토글 */}
-        <div className="absolute left-0 top-20 w-full z-40">
-          <div
-            className={`bg-white shadow w-full px-6 py-6 transition-all duration-300 ease-in-out pointer-events-auto ${
-              hovered
-                ? "opacity-100 translate-y-0 visible"
-                : "opacity-0 -translate-y-3 invisible"
-            }`}
-          >
-            <div className="flex justify-between">
-              <div className="w-[120px]" />
-              <div className="flex gap-11">
-                {NAV_ITEMS.map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex justify-center px-1 py-1"
-                  >
-                    {item.subItems.length > 0 && (
-                      <ul className="space-y-2 text-sm text-gray-800">
-                        {item.subItems.map((sub, idx) => (
-                          <li key={idx}>
-                            <Link
-                              href={`/${item.label
-                                .toLowerCase()
-                                .replace(/\s+/g, "-")}/${sub
-                                .toLowerCase()
-                                .replace(/\s+/g, "-")}`}
-                              className="hover:underline"
-                            >
-                              {sub}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
+        {isLargeScreen && (
+          <div className="absolute left-0 top-20 w-full z-40">
+            <div
+              className={`bg-white shadow w-full px-6 py-6 transition-all duration-300 ease-in-out pointer-events-auto ${
+                hovered
+                  ? "opacity-100 translate-y-0 visible"
+                  : "opacity-0 -translate-y-3 invisible"
+              }`}
+            >
+              <div className="flex justify-between">
+                <div className="w-[120px]" />
+                <div className="flex gap-11">
+                  {NAV_ITEMS.map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex justify-center px-1 py-1"
+                    >
+                      {item.subItems.length > 0 && (
+                        <ul className="space-y-2 text-sm text-gray-800">
+                          {item.subItems.map((sub, idx) => (
+                            <li key={idx}>
+                              <Link
+                                href={`/${item.label
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")}/${sub
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")}`}
+                                className="hover:underline"
+                              >
+                                {sub}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {open && <div className="fixed inset-0 bg-gray-800/40 z-400" />}
