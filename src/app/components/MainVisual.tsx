@@ -33,7 +33,7 @@ export default function MainVisual() {
   }, []);
 
   return (
-    <section className="relative w-full h-[400px] overflow-hidden">
+    <section className="relative w-full h-[600px] overflow-hidden">
       {dummyImages.map((img, index) => (
         <div
           key={index}

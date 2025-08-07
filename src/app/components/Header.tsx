@@ -27,18 +27,28 @@ const NAV_ITEMS = [
   },
   {
     label: "CAREER",
-    subItems: [],
+    subItems: ["CAREER"],
   },
   {
     label: "STARSHIP SQUARE",
-    subItems: [],
+    subItems: ["STARSHIP SQUARE"],
   },
 ];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -55,75 +65,81 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow">
-      <div className="flex justify-between items-center max-w-7xl mx-auto px-4 h-20 relative z-50">
-        <Link href="/">
-          <Image
-            src="/logo.png"
-            alt="STARSHIP 로고"
-            width={120}
-            height={20}
-            priority
-          />
-        </Link>
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="relative z-50"
+      >
+        <div className="flex justify-between items-center max-w-7xl mx-auto px-4 h-20">
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="STARSHIP 로고"
+              width={120}
+              height={20}
+              priority
+            />
+          </Link>
 
-        <nav
-          className="hidden lg:flex gap-8 text-sm font-bold text-gray-900"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        >
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.label}
-              href={`/${item.label.toLowerCase().replace(/\s+/g, "-")}`}
-              className="px-2 py-1"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <button onClick={() => setOpen(true)} className="lg:hidden p-2">
-          <HiOutlineMenu size={24} />
-        </button>
-      </div>
-
-      {hovered && (
-        <div
-          className="absolute left-0 top-20 w-screen bg-white z-40"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        >
-          <div className="max-w-7xl mx-auto px-6 py-6 flex gap-16">
+          <nav className="hidden lg:flex gap-8 text-sm font-bold text-gray-900">
             {NAV_ITEMS.map((item) => (
-              <div key={item.label} className="min-w-[120px]">
-                {item.subItems.length > 0 && (
-                  <>
-                    <p className="font-bold text-sm text-gray-900 mb-2">
-                      {item.label}
-                    </p>
-                    <ul className="space-y-2 text-sm text-gray-800">
-                      {item.subItems.map((sub, idx) => (
-                        <li key={idx}>
-                          <Link
-                            href={`/${item.label
-                              .toLowerCase()
-                              .replace(/\s+/g, "-")}/${sub
-                              .toLowerCase()
-                              .replace(/\s+/g, "-")}`}
-                            className="hover:underline"
-                          >
-                            {sub}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              </div>
+              <Link
+                key={item.label}
+                href={`/${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                className="px-2 py-1"
+              >
+                {item.label}
+              </Link>
             ))}
+          </nav>
+
+          <button onClick={() => setOpen(true)} className="lg:hidden p-2">
+            <HiOutlineMenu size={24} />
+          </button>
+        </div>
+
+        {/* 항상 렌더링하되 visibility만 토글 */}
+        <div className="absolute left-0 top-20 w-full z-40">
+          <div
+            className={`bg-white shadow max-w-7xl mx-auto px-6 py-6 transition-all duration-300 ease-in-out pointer-events-auto ${
+              hovered
+                ? "opacity-100 translate-y-0 visible"
+                : "opacity-0 -translate-y-3 invisible"
+            }`}
+          >
+            <div className="flex justify-between">
+              <div className="w-[120px]" />
+              <div className="flex gap-11">
+                {NAV_ITEMS.map((item) => (
+                  <div
+                    key={item.label}
+                    className="flex justify-center px-1 py-1"
+                  >
+                    {item.subItems.length > 0 && (
+                      <ul className="space-y-2 text-sm text-gray-800">
+                        {item.subItems.map((sub, idx) => (
+                          <li key={idx}>
+                            <Link
+                              href={`/${item.label
+                                .toLowerCase()
+                                .replace(/\s+/g, "-")}/${sub
+                                .toLowerCase()
+                                .replace(/\s+/g, "-")}`}
+                              className="hover:underline"
+                            >
+                              {sub}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      )}
+      </div>
 
       {open && <div className="fixed inset-0 bg-gray-800/40 z-400" />}
 
