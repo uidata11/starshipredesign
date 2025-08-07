@@ -41,6 +41,11 @@ export default function Header() {
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
+  const [hoveredNav, setHoveredNav] = useState(false);
+  const [hoveredMenu, setHoveredMenu] = useState(false);
+
+  const isHovered = isLargeScreen && (hoveredNav || hoveredMenu);
+
   useEffect(() => {
     const handleResize = () => {
       setIsLargeScreen(window.innerWidth >= 1024);
@@ -79,8 +84,8 @@ export default function Header() {
 
           <nav
             className="hidden lg:flex gap-8 text-sm font-bold text-gray-900"
-            onMouseEnter={() => isLargeScreen && setHovered(true)}
-            onMouseLeave={() => isLargeScreen && setHovered(false)}
+            onMouseEnter={() => setHoveredNav(true)}
+            onMouseLeave={() => setHoveredNav(false)}
           >
             {NAV_ITEMS.map((item) => (
               <Link
@@ -99,21 +104,25 @@ export default function Header() {
         </div>
 
         {isLargeScreen && (
-          <div className="absolute left-0 top-20 w-full z-40">
+          <div
+            className="absolute left-0 top-20 w-full z-40"
+            onMouseEnter={() => setHoveredMenu(true)}
+            onMouseLeave={() => setHoveredMenu(false)}
+          >
             <div
-              className={`bg-white shadow w-full px-6 py-6 transition-all duration-300 ease-in-out pointer-events-auto ${
-                hovered
+              className={`bg-white shadow w-full px-6 py-6 transition-all duration-200 ease-in-out pointer-events-auto ${
+                isHovered
                   ? "opacity-100 translate-y-0 visible"
                   : "opacity-0 -translate-y-3 invisible"
               }`}
             >
-              <div className="flex justify-between">
+              <div className="flex justify-between mx-auto max-w-7xl px-4">
                 <div className="w-[120px]" />
-                <div className="flex gap-11">
+                <div className="flex gap-10">
                   {NAV_ITEMS.map((item) => (
                     <div
                       key={item.label}
-                      className="flex justify-center px-1 py-1"
+                      className="flex justify-center px-1.5 py-1"
                     >
                       {item.subItems.length > 0 && (
                         <ul className="space-y-2 text-sm text-gray-800">
